@@ -1,0 +1,5 @@
+dist: xenial
+compiler: clang
+install: make
+script:
+  - make

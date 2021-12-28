@@ -1,0 +1,9 @@
+[credential]
+        helper = cache --timeout 1800
+
+[user]
+	name = weitsang
+	email = dcsooiwt@nus.edu.sg
+
+[github]
+        user = weitsang

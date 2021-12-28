@@ -1,0 +1,2 @@
+chmod 600 outputs/max.*
+cp ~cs1010/.pe-files/outputs/max.* outputs

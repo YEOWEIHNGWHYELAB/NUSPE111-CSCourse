@@ -1,0 +1,86 @@
+#!/bin/bash
+set -o nounset
+
+# Change the following two lines when releasing a new assignment
+assignment="ex10"
+gitorg="nus-cs1010-2122-s1"
+problems="transpose palindrome rotate marnell bracket"
+
+#get git username from git config
+readonly GIT_USER=$(git config --get github.user)
+
+if [ -z $GIT_USER ]; then
+  cat << HERE
+Please configure your Github user id on CS1010 PE hosts before running this script.  You can do so by editing the ~/.gitconfig file.
+HERE
+  exit 1
+fi
+
+#check if under git repository
+git remote get-url origin &> /dev/null
+if [ "$?" -ne "0" ]; then
+  cat << HERE
+You are not under a git repository directory.  Please navigate to the directory for ${assignment} and submit again.
+HERE
+  exit 1
+fi
+
+#get reponame
+readonly reponame="$assignment-$GIT_USER"
+read -ra problemset <<< "$problems"
+
+#check if under correct assignment repo
+localrepo=`git remote get-url origin`
+if [[ ! $localrepo =~ .*[:/]$gitorg/$reponame.git$ ]]; then
+  cat << HERE
+Your current directory is for the git repository below:
+  $localrepo
+Please navigate to the directory for ${assignment} and submit again.
+HERE
+  exit 1
+fi
+
+# add commit and push
+for problem in "${problemset[@]}"; do
+  if [ ! -e $problem.c ]; then
+    echo "$problem.c does not exist. It is not submitted."
+  else
+    git add $problem.c
+  fi
+done
+got_change=$(git status --porcelain)
+
+# commit a copy of the change to submit-history branch
+git checkout submit-history -q
+# commit changes to master branch
+if [ "$got_change" != "" ]; then
+  git commit -m "Submit via script" 
+fi
+
+# back to master, cherry pick the last commit, and squash
+git checkout master -q
+if [ "$got_change" != "" ]; then
+  git cherry-pick submit-history
+  first_commit=`git log --oneline | tail -1 | cut -d" " -f 1`
+  # squash history
+  git reset --soft $first_commit 
+  git commit -m "Cumulative submission" 
+
+  # now push everything
+  git push --force --all
+
+  if [ "$?" -ne "0" ]; then
+    cat << HERE
+Submission FAILED.
+Check that your .gitconfig is configured properly and your GitHub password is entered correctly.  If you are sure everything has been done correct, send a copy of the output above to a member of the CS1010 teaching team.
+HERE
+    exit 1
+  else
+    cat << HERE
+You have successfully submitted your code.  You can view your submission online at:
+  https://github.com/$gitorg/$reponame
+HERE
+  fi
+else
+  git push --force --all
+fi

@@ -1,0 +1,11 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =9
+let g:netrw_dirhist_1='/home/course/cs1010/submissions/as03-grading/C1B/as03-YuKi-Ho1000'
+let g:netrw_dirhist_2='/home/course/cs1010/submissions/as03-grading/D11/as03-xEmbraced'
+let g:netrw_dirhist_3='/home/course/cs1010/submissions/as06-grading/scripts'
+let g:netrw_dirhist_4='/home/course/cs1010/submissions/as06-grading/D06/as06-MAZJ124'
+let g:netrw_dirhist_5='/home/course/cs1010/submissions/as06-grading/C1A/feedback'
+let g:netrw_dirhist_6='/home/course/cs1010/submissions/as03-grading/G07/as03-hlwang56'
+let g:netrw_dirhist_7='/home/course/cs1010/submissions/as03-grading/G07/as03-hlwang56/.git'
+let g:netrw_dirhist_8='/home/course/cs1010/submissions/as03-grading/G07/as03-hlwang56'
+let g:netrw_dirhist_9='/home/course/cs1010/2122s1/as03-skeleton/inputs'

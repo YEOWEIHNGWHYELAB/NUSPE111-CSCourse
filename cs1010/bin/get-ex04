@@ -1,0 +1,31 @@
+#!/bin/bash
+# Change the following line when releasing a new assignment.
+assignment="ex04"
+#get git username from git config
+GIT_USER=$(git config --get github.user)
+if [ -z "$GIT_USER" ]; then
+  cat << HERE
+Please configure your Github user id on CS1010 PE hosts before running this script.  You can do so by editing the ~/.gitconfig file.
+HERE
+  exit 1
+fi
+#get reponame
+gitorg="nus-cs1010-2122-s1"
+ssh_repolink="git@github.com:$gitorg/$assignment-$GIT_USER.git"
+
+git clone "$ssh_repolink"
+if [ "$?" -ne "0" ]; then
+  echo "Unable to retrieve skeleton code."
+  echo "Please check if you have: "
+  echo "- accepted the assignment/exercise;"
+  echo "- created .gitconfig;"
+  echo "- setup your GitHub SSH keys correctly;"
+  exit 2
+fi
+# create a branch to store history
+cd "$assignment-$GIT_USER"
+git branch submit-history
+if [ "$?" -ne "0" ]; then
+  echo "Unable to create branch."
+fi
+cd ..

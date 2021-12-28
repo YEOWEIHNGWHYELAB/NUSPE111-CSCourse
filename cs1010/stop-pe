@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+echo ""
+echo "WARNING: By running this script, you are confirming that you are"
+echo "finalizing your code for CS1010 PE2.  You will be logged out of "
+echo "the server.  All your running programs on the PE server will be "
+echo "terminated.  Make sure that you save your files before you continue"
+echo "to avoid loosing your work."
+echo ""
+echo "Any attempt to edit your PE code after this is considered a "
+echo "violation of NUS Code of Conduct and would result in disciplinary "
+echo "action."
+echo ""
+echo "Are you sure you want to continue?  You cannot change your mind"
+echo "after this."
+echo ""
+echo "Type 'yes' if you are sure.  Choose this if the time given for "
+echo "completing PE is up."
+echo ""
+echo "Type 'no' otherwise.  Choose this if you accidentally run this "
+echo "script before PE2 time is up."
+
+trap ctrl_c INT
+function ctrl_c() {
+  echo "You can't Control-C.  Please answer yes or no"
+}
+
+read reply
+while [ "$reply" != "yes" ] && [ "$reply" != "no" ]
+do
+  echo "Please answer yes or no"
+  read reply
+done
+if [ "$reply" == "yes" ]; then
+  cd
+  chmod 400 *c
+  echo "Your .c files in your plab account has been finalized."
+  echo ""
+  echo "Note that your code may not yet be transfered to our grading"
+  echo "server at this time.  Do not relogin and edit your files. "
+  echo "Killing all your processes in 3 seconds.."
+  sleep 3
+  kill -15 -1
+  exit
+fi
+if [ "$reply" == "no" ]; then
+  echo "OK.  Carry on then."
+fi
